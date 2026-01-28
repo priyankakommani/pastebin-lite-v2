@@ -1,4 +1,3 @@
-// Note: Removed unused PrismaClient import as we migrated to 'pg'
 async function test() {
     const baseUrl = 'http://localhost:3000'
     // Ensure TEST_MODE is active for x-test-now-ms support
