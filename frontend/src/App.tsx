@@ -3,7 +3,7 @@ import { Clipboard, Check, Share2, Clock, Eye } from 'lucide-react'
 import './App.css'
 
 // Use VITE_API_URL from environment or fallback to localhost
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:3000').replace(/\/$/, '')
 
 function App() {
     const [content, setContent] = useState('')
