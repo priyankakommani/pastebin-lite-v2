@@ -3,11 +3,9 @@
     "version": "1.0.0",
     "main": "src/index.ts",
     "scripts": {
-        "start": "tsx src/index.ts",
+        "start": "node dist/index.js",
         "dev": "tsx watch src/index.ts",
-        "build": "tsc",
-        "prisma:generate": "prisma generate",
-        "prisma:push": "prisma db push"
+        "build": "tsc"
     },
     "dependencies": {
         "@hono/node-server": "^1.13.7",
