@@ -14,7 +14,6 @@ app.use('/p/*', cors())
 // FOR TESTING: Bypass SSL verification for Aiven
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
-// Helper to get present time
 const getNow = (c: any) => {
     const testNow = c.req.header('x-test-now-ms')
     if (process.env.TEST_MODE === '1' && testNow) {
