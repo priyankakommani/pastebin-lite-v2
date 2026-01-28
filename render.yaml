@@ -2,10 +2,9 @@ services:
   - type: web
     name: pastebin-lite-backend
     runtime: node
-    repo: https://github.com/priyankakommani/pastebin-lite-v2
     rootDir: backend
     buildCommand: npm install && npm run build
-    startCommand: npm start
+    startCommand: npm run start
     envVars:
       - key: PORT
         value: 3000
@@ -14,4 +13,4 @@ services:
       - key: TEST_MODE
         value: 0
       - key: DATABASE_URL
-        sync: false # User will provide this in the dashboard
+        sync: false
