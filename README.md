@@ -1,7 +1,7 @@
 # Pastebin-Lite v2
 
-This version of Pastebin-Lite is designed for a decoupled deployment:
-- **Backend**: Render (Standalone Node.js/Hono)
+This version of Pastebin-Lite is migrated to use raw PostgreSQL via the `pg` client.
+- **Backend**: Render (Hono + pg)
 - **Database**: Aiven (PostgreSQL)
 - **Frontend**: Vercel (Vite/React)
 
@@ -9,49 +9,53 @@ This version of Pastebin-Lite is designed for a decoupled deployment:
 
 ```text
 pastebin-lite-v2/
-├── backend/          # Hono server + Prisma
-└── frontend/         # Vite/React SPA
+├── backend/          # Hono server (Node.js)
+│   └── src/          # API logic & DB connection
+└── frontend/         # Vite/React Application
 ```
 
-## Setup Instructions
+## Utility & Test Commands
 
-### 1. Database (Aiven)
-1. Log in to [Aiven](https://aiven.io/).
-2. Create a new **PostgreSQL** service.
-3. Copy the **Connection URI**.
-4. Important: Ensure the URI ends with `?sslmode=require`.
+Run these from the `backend/` directory:
 
-### 2. Backend (Render)
-1. Create a new **Web Service** on Render.
-2. Connect your repository (or upload the `backend` folder).
-3. Set the **Root Directory** to `backend`.
-4. Set the **Build Command** to `npm install && npm run build && npx prisma generate`.
-5. Set the **Start Command** to `npm start`.
-6. Add Environment Variable:
-   - `DATABASE_URL`: Your Aiven PostgreSQL Connection URI.
-
-### 3. Frontend (Vercel)
-1. Create a new project on Vercel.
-2. Connect your repository.
-3. Set the **Root Directory** to `frontend`.
-4. Add Environment Variable:
-   - `VITE_API_URL`: The URL of your Render backend (e.g., `https://pastebin-backend.onrender.com`).
-5. Deploy.
+| Command | Description |
+| :--- | :--- |
+| `npx tsx src/test-api.ts` | **Run Functional Tests** (TTL, View Limits, Health) |
+| `npx tsx src/view-pastes.ts` | **View Database Records** (Table view of all pastes) |
+| `npx tsx src/list-tables.ts` | **List All Tables** in the database |
 
 ## Local Development
 
-1. **Backend**:
-   ```bash
-   cd backend
-   npm install
-   # Create .env with your DATABASE_URL
-   npm run dev
-   ```
+### 1. Backend Setup
+```bash
+cd backend
+npm install
+# Create .env with:
+# DATABASE_URL="your_aiven_postgres_url"
+# PORT=3000
+# TEST_MODE=1 (to enable functional test headers)
+npm run dev
+```
 
-2. **Frontend**:
-   ```bash
-   cd frontend
-   npm install
-   # Create .env with VITE_API_URL=http://localhost:3000
-   npm run dev
-   ```
+### 2. Frontend Setup
+```bash
+cd frontend
+npm install
+# Create .env with:
+# VITE_API_URL=http://localhost:3000
+npm run dev
+```
+
+## Deployment
+
+### Render (Backend - Web Service)
+- **Environment**: Node
+- **Build Command**: `npm install && npm run build`
+- **Start Command**: `npm start`
+- **Root Directory**: `backend`
+
+### Vercel (Frontend)
+- **Build Command**: `npm run build`
+- **Output Directory**: `dist`
+- **Root Directory**: `frontend`
+- **Env Variable**: `VITE_API_URL` (points to your Render URL)
